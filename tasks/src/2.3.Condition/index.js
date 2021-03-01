@@ -16,17 +16,24 @@ import './styles.css';
  */
 
 function renderPosts(posts) {
+  let divPost = <div className="posts">Отклики в количестве {posts.length}</div>;
+  if(posts.length === 0) {
+    divPost = <div className="emptyPosts">Нет откликов</div>;
+  }
+  else if (posts.length === 1) {
+    divPost = <div className="singlePost">Единственный отклик</div>
+  }
   //<div className="emptyPosts">Нет откликов</div>
   //<div className="singlePost">Единственный отклик</div>
-  return <div className="posts">Отклики в количестве {posts.length}</div>;
+  return divPost;
 }
 
 function renderLot(name, description, tags) {
   return (
     <div className="lot">
-      <div className="lotName">{name}</div>
-      <div className="lotDescription">{description}</div>
-      {renderTags(tags)}
+      <div className="lotName">{name ? name : '<Неизвестный предмет>'}</div>
+      <div className={description ? "lotDescription" : ''}>{description}</div>
+      {tags.length === 0 || renderTags(tags)}
     </div>
   );
 }

@@ -31,7 +31,7 @@ const posts = [
 
 function renderPost(post) {
   return (
-    <div className="post">
+    <div key={post.id} className="post">
       <div className="postHeader">
         <span className="postAuthor">{post.author}</span>
         <br />
@@ -43,21 +43,21 @@ function renderPost(post) {
 }
 
 function renderAuthors(posts) {
+  const arrAuthors = [];
+
+  for (const post of posts) {
+    arrAuthors.push(<span key={post.id}>{post.author}</span>);
+  }
+
   return (
-    <div className="authors">
-      <span>{posts[0].author}</span>
-      <span>{posts[1].author}</span>
-      <span>{posts[2].author}</span>
-    </div>
+    <div className="authors">{arrAuthors}</div>
   );
 }
 
 ReactDom.render(
   <div className="page">
     <div className="posts">
-      {renderPost(posts[0])}
-      {renderPost(posts[1])}
-      {renderPost(posts[2])}
+      {posts.map(post => renderPost(post))}
     </div>
     {renderAuthors(posts)}
   </div>,

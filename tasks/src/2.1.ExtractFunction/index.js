@@ -6,31 +6,34 @@ import './styles.css';
      Выдели метод отрисовки лота (renderLot), метод отрисовки поста (renderPost) и используй их.
  */
 
-ReactDom.render(
-  <div className="page">
+ function renderLot() {
+   return (
     <div className="lot">
       <div className="lotName">Форма для выпекания</div>
       <div className="lotDescription">Идеальна для приготовления десертов!</div>
     </div>
+   );
+ }
+
+ function renderPost(postAuthor, postTime, postMessage) {
+   return (
+    <div className="post">
+      <div className="postHeader">
+        <span className="postAuthor">{postAuthor}</span>
+        <br />
+        <span className="postTime">{postTime}</span>
+      </div>
+    <div className="postMessage">{postMessage}</div>
+    </div>
+   );
+ }
+
+ReactDom.render(
+  <div className="page">
+    {renderLot()} 
     <div className="posts">
-      <div className="post">
-        <div className="postHeader">
-          <span className="postAuthor">Парень не промах</span>
-          <br />
-          <span className="postTime">2 часа назад</span>
-        </div>
-        <div className="postMessage">Попробую с удовольствием ;)</div>
-      </div>
-      <div className="post">
-        <div className="postHeader">
-          <span className="postAuthor">Милая девушка</span>
-          <br />
-          <span className="postTime">3 часа назад</span>
-        </div>
-        <div className="postMessage">
-          Можно использовать для выпекания чизкейков :)
-        </div>
-      </div>
+      {renderPost('Парень не промах', '2 часа назад', 'Попробую с удовольствием ;)')}
+      {renderPost('Милая девушка', '3 часа назад', 'Можно использовать для выпекания чизкейков :)')}
     </div>
   </div>,
   document.getElementById('app')
