@@ -49,7 +49,14 @@ class CreditCardInputWithRestore extends React.Component {
 class CreditCardInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.value };
+    this.state = { value: props.value, changed: false};
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if(prevState.changed || prevState.value === nextProps.value) {
+      return null;
+    }
+    return { value: nextProps.value, changed: true };
   }
 
   render() {

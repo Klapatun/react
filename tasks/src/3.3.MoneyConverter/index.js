@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import './styles.css';
 
 /**
@@ -12,6 +12,28 @@ import './styles.css';
 const RUBLES_IN_ONE_EURO = 70;
 
 class MoneyConverter extends React.Component {
+  constructor(props) {
+    super(props);
+    this.status = {
+      value: Array(2).fill(0)
+    };
+  }
+
+  handleClick(value, currency) {
+    const valueArr = this.status.value;
+
+    if(currency === 'rub') {
+      valueArr[0] = value;
+      valueArr[1] = value/RUBLES_IN_ONE_EURO;
+    }
+    else if(currency === 'evr') {
+      valueArr[0] = value*RUBLES_IN_ONE_EURO;
+      valueArr[1] = value;
+    }
+
+    this.setState({ value: valueArr });
+  }
+
   render() {
     return (
       <div className="root">
@@ -19,9 +41,17 @@ class MoneyConverter extends React.Component {
           <h2>Конвертер валют</h2>
           <div>
             <span>&#8381;</span>
-            <Money />
+            <Money 
+              value={this.status.value[0]}
+              currency='rub'
+              onChange={this.handleClick.bind(this)}
+            />
             &mdash;
-            <Money />
+            <Money 
+              value={this.status.value[1]}
+              currency='evr'
+              onChange={this.handleClick.bind(this)}
+            />
             <span>&euro;</span>
           </div>
         </div>
@@ -30,31 +60,27 @@ class MoneyConverter extends React.Component {
   }
 }
 
-class Money extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0
-    };
-  }
+function Money(props) {
 
-  render() {
-    return (
-      <input
-        type="text"
-        value={this.state.value}
-        onChange={this.handleChangeValue}
-      />
-    );
-  }
-
-  handleChangeValue = event => {
+  const handleChangeValue = event => {
     const value = extractNumberString(event.target.value);
-    this.setState({ value });
+    props.onChange(value, props.currency);
   };
+
+  return (
+    <input
+      type="text"
+      value={props.value}
+      onChange={handleChangeValue}
+    />
+  );
 }
 
-Money.propTypes = {};
+Money.propTypes = {
+  value: PropTypes.symbol,
+  currency: PropTypes.string,
+  onChange: PropTypes.func
+};
 
 function extractNumberString(value) {
   const str = value.replace(/^0+/g, '').replace(/[^\.0-9]/g, '');

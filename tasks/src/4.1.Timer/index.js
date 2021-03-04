@@ -42,6 +42,19 @@ class TimeDisplay extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.timerId = setInterval(()=>{
+      console.log('tick');
+      this.setState({
+        localTime: new Date()
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
+
   render() {
     return (
       <div className="time">{this.state.localTime.toLocaleTimeString()}</div>
